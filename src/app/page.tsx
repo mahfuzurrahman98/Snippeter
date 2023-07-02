@@ -1,63 +1,91 @@
 'use client';
 
-import SnippetCard from '@/app/components/SnippetCard';
-import { useState } from 'react';
+import axios from 'axios';
+import { SetStateAction, useEffect, useState } from 'react';
 
-const Home = () => {
-  const [snippets, setSnippets] = useState([
-    { id: 1, title: 'Snippet 1', language: 'JavaScript' },
-    { id: 2, title: 'Snippet 2', language: 'Python' },
-    { id: 3, title: 'Snippet 3', language: 'Java' },
-  ]);
+const SnippetsPage = () => {
+  const [snippets, setSnippets] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [languageFilter, setLanguageFilter] = useState('');
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  useEffect(() => {
+    // Fetch snippets from the backend API and update the snippets state
+    const fetchSnippets = async () => {
+      try {
+        const response = await axios.get('/api/snippets'); // Replace with your backend API endpoint
+        setSnippets(response.data.snippets);
+      } catch (error) {
+        console.error('Error fetching snippets:', error);
+      }
+    };
 
-  const indexOfLastSnippet = currentPage * itemsPerPage;
-  const indexOfFirstSnippet = indexOfLastSnippet - itemsPerPage;
-  const currentSnippets = snippets.slice(
-    indexOfFirstSnippet,
-    indexOfLastSnippet
+    fetchSnippets();
+  }, []);
+
+  const filteredSnippets = snippets.filter(
+    (snippet) =>
+      snippet.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      (languageFilter === '' || snippet.language === languageFilter)
   );
 
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  const handleSearchChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleLanguageFilterChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setLanguageFilter(e.target.value);
   };
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Code Snippets</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {currentSnippets.map((snippet, index) => (
-          <SnippetCard key={index} snippet={snippet} />
-        ))}
+
+      <div className="flex space-x-4 mb-4">
+        <input
+          type="text"
+          placeholder="Search by title"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="border border-gray-300 p-2 rounded-md flex-1"
+        />
+
+        <select
+          value={languageFilter}
+          onChange={handleLanguageFilterChange}
+          className="border border-gray-300 p-2 rounded-md"
+        >
+          <option value="">All Languages</option>
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          {/* Add more options for other languages */}
+        </select>
       </div>
-      <div className="flex justify-center mt-4">
-        <nav>
-          <ul className="flex items-center">
-            <li className="mx-1">
-              <button
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="px-3 py-2 rounded-lg bg-blue-500 text-white disabled:bg-gray-300"
-              >
-                Previous
-              </button>
-            </li>
-            <li className="mx-1">
-              <button
-                onClick={() => paginate(currentPage + 1)}
-                disabled={indexOfLastSnippet >= snippets.length}
-                className="px-3 py-2 rounded-lg bg-blue-500 text-white disabled:bg-gray-300"
-              >
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
+
+      <div>
+        {filteredSnippets.length === 0 ? (
+          <p className="text-gray-500">No snippets found.</p>
+        ) : (
+          filteredSnippets.map((snippet) => (
+            <div
+              key={snippet.uuid}
+              className="border border-gray-300 p-4 rounded-md mb-4"
+            >
+              <h2 className="text-xl font-bold">{snippet.title}</h2>
+              <p className="text-gray-500">Language: {snippet.language}</p>
+              {/* Display other snippet details */}
+            </div>
+          ))
+        )}
       </div>
+
+      {/* Pagination component */}
+      {/* Add pagination component here */}
     </div>
   );
 };
 
-export default Home;
+export default SnippetsPage;
