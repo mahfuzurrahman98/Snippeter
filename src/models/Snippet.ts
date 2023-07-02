@@ -4,6 +4,10 @@ const db = Database.getInstance();
 
 const snippetSchema = new db.Schema(
   {
+    uuid: {
+      type: String,
+      required: [true, 'UUID is required'],
+    },
     title: {
       type: String,
       required: [true, 'Title is required'],
@@ -16,21 +20,17 @@ const snippetSchema = new db.Schema(
       type: String,
       required: [true, 'Source code is required'],
     },
-    theme: {
-      type: String,
-      required: [true, 'Theme is required'],
-    },
     owner: {
       type: String,
       required: [true, 'Owner is required'],
     },
-    expiry: {
-      type: Number,
-      required: [true, 'Expiry is required'],
+    tags: {
+      type: [String],
+      required: [false],
     },
   },
   { timestamps: true }
 );
 
-const Snippet = db.model('Snippet', snippetSchema);
+const Snippet = db.models.snippets || db.model('snippets', snippetSchema);
 export default Snippet;
