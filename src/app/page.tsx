@@ -8,7 +8,6 @@ const Home = () => {
     { id: 1, title: 'Snippet 1', language: 'JavaScript' },
     { id: 2, title: 'Snippet 2', language: 'Python' },
     { id: 3, title: 'Snippet 3', language: 'Java' },
-    // Additional snippets...
   ]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,8 +28,8 @@ const Home = () => {
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-4">Code Snippets</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {currentSnippets.map((snippet) => (
-          <SnippetCard key={snippet.id} snippet={snippet} />
+        {currentSnippets.map((snippet, index) => (
+          <SnippetCard key={index} snippet={snippet} />
         ))}
       </div>
       <div className="flex justify-center mt-4">
