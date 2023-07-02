@@ -6,7 +6,7 @@ export const metadata = {
 const CreateSnippetLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className="font-mono">{children}</body>
+      <body>{children}</body>
     </html>
   );
 };
