@@ -1,16 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose, { Mongoose } from 'mongoose';
 
 class Database {
-  static instance = null;
+  private static instance: Mongoose | null = null;
 
-  static getInstance() {
+  static getInstance(): Mongoose {
     if (!Database.instance) {
       mongoose.set('strictQuery', true);
       mongoose
-        .connect(process.env.DB_URL, {
+        .connect(process.env.DB_URL!, {
           useNewUrlParser: true,
           useUnifiedTopology: true,
-        })
+        } as any) // Type assertion here
         .then(() => {
           console.log('Connected to MongoDB');
         })
