@@ -3,6 +3,7 @@
 import languages from '@configs/languages';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 type Snippet = {
   title: string;
@@ -36,7 +37,11 @@ const Snippet = ({ params }: Params) => {
   }, [params.snippetId]);
 
   if (!snippet) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   const formattedDate = new Date(snippet.createdAt).toLocaleString('en-US', {
@@ -49,6 +54,20 @@ const Snippet = ({ params }: Params) => {
 
   return (
     <div className="max-w-3xl mx-auto py-7 px-5">
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          className: '',
+          duration: 5000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            duration: 3000,
+          },
+        }}
+      />
       <h1 className="text-3xl font-bold mb-4">{snippet.title}</h1>
       <p className="text-gray-500 mb-2">Created at: {formattedDate}</p>
       <p className="text-gray-500 mb-4">Tags: {snippet.tags.join(', ')}</p>
@@ -59,12 +78,14 @@ const Snippet = ({ params }: Params) => {
           {languages.find((lang) => lang.ext === snippet.language)?.name}
         </span>
         <button
-          className="font-semibold px-2 py-1"
+          className="font-semibold rounded-md p-1 bg-white flex gap-x-1 items-center"
           onClick={() => {
             navigator.clipboard.writeText(snippet.sourceCode);
+            toast.success('Copied to clipboard!');
           }}
         >
-          <img src="/copy.svg" alt="copy" width={10} className="text-white" />
+          <img src="/copy.svg" alt="copy" width={12} className="text-white" />
+          <span className="text-black text-xs">Copy</span>
         </button>
       </div>
       <pre className="bg-black rounded-b-md p-4 max-w-full overflow-x-auto">

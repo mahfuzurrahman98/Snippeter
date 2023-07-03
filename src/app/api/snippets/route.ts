@@ -1,9 +1,6 @@
-import Database from '@configs/db';
 import Snippet from '@models/Snippet';
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 } from 'uuid';
-
-const db = Database.getInstance();
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -16,10 +13,13 @@ export const POST = async (req: NextRequest) => {
     const snippet = new Snippet(reqBody);
     await snippet.save();
 
-    return NextResponse.json({
-      message: 'Snippet created successfully',
-      success: true,
-    });
+    return NextResponse.json(
+      {
+        message: 'Snippet created successfully',
+        success: true,
+      },
+      { status: 201 }
+    );
   } catch (error: any) {
     return NextResponse.json(
       {
@@ -27,22 +27,29 @@ export const POST = async (req: NextRequest) => {
         success: false,
         error: error.message,
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 };
 
 export const GET = async (req: NextRequest) => {
   try {
-    const snippets = await Snippet.find();
+    const page: number = Number(req.nextUrl.searchParams.get('page')) || 1;
+    const limit: number = Number(req.nextUrl.searchParams.get('limit')) || 10;
 
-    return NextResponse.json({
-      message: 'Snippets fetched successfully',
-      success: true,
-      snippets,
-    });
+    const snippets = await Snippet.find()
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    return NextResponse.json(
+      {
+        message: 'Snippets fetched successfully',
+        success: true,
+        snippets,
+      },
+      { status: 200 }
+    );
   } catch (error: any) {
     return NextResponse.json(
       {
@@ -50,9 +57,7 @@ export const GET = async (req: NextRequest) => {
         success: false,
         error: error.message,
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 };

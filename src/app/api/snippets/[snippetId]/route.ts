@@ -1,8 +1,6 @@
 import Snippet from '@models/Snippet';
 import { NextRequest, NextResponse } from 'next/server';
 
-// create a function which catch the uuid from the url and return the snippet
-
 export const GET = async (req: NextRequest, context: { params: any }) => {
   const uuid = context.params.snippetId;
   console.log(uuid);

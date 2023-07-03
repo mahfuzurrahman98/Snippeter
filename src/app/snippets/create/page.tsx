@@ -38,6 +38,7 @@ const CreateSnippet = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setButtonDisabled(true);
+    return;
 
     let tagsArray = formData._tags.split(',').map((tag) => tag.trim());
     tagsArray = tagsArray.filter((tag) => tag !== '');
@@ -163,10 +164,19 @@ const CreateSnippet = () => {
         </div>
         <button
           type="submit"
-          className="px-4 py-2 text-white bg-black rounded hover:bg-gray-700"
+          className={`px-4 py-2 text-white rounded hover:bg-gray-600 ${
+            buttonDisabled ? 'bg-gray-700' : 'bg-black '
+          }`}
           disabled={buttonDisabled}
         >
-          Create Snippet
+          {buttonDisabled ? (
+            <div className="flex items-center">
+              <img src="/loading.gif" alt="Loading" className="w-5 h-5 mr-2" />
+              Creating...
+            </div>
+          ) : (
+            'Create'
+          )}
         </button>
       </form>
     </div>
