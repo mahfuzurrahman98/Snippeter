@@ -33,4 +33,5 @@ const snippetSchema = new db.Schema(
 );
 
 const Snippet = db.models.snippets || db.model('snippets', snippetSchema);
+
 export default Snippet;

@@ -60,7 +60,7 @@ const CreateSnippet = () => {
   };
 
   return (
-    <div className="container mx-auto py-10 px-5 max-w-[750px]">
+    <div className="mx-auto py-7 px-5 max-w-3xl">
       <h1 className="text-3xl font-bold mb-6">Create a Snippet</h1>
       <Toaster
         position="bottom-right"

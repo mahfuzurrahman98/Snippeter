@@ -8,6 +8,7 @@ const db = Database.getInstance();
 export const POST = async (req: NextRequest) => {
   try {
     const reqBody = await req.json();
+
     delete reqBody._tags;
     console.log(reqBody);
     // return;
