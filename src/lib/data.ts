@@ -33,3 +33,29 @@ export const getAllSnippets = async (
     };
   }
 };
+
+export const getSnippet = async (uuid: string) => {
+  console.log(uuid);
+  try {
+    const snippet = await Snippet.findOne({ uuid });
+    console.log(snippet);
+    if (snippet) {
+      return {
+        message: 'Snippet fetched successfully',
+        success: true,
+        data: { snippet },
+      };
+    } else {
+      return {
+        message: 'Snippet not found',
+        success: true,
+        data: { snippet: null },
+      };
+    }
+  } catch (error: any) {
+    return {
+      message: error.message,
+      success: false,
+    };
+  }
+};
