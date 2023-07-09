@@ -1,7 +1,7 @@
+import CopyButton from '@app/components/CopyButton';
 import languages from '@configs/languages';
 import { getSnippet } from '@lib/data';
 import { SnippetType } from '@utils/types';
-import { Toaster } from 'react-hot-toast';
 
 type Params = {
   params: {
@@ -39,20 +39,6 @@ const Snippet = async ({ params }: Params) => {
 
   return (
     <div className="max-w-3xl mx-auto py-7 px-5">
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          className: '',
-          duration: 5000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-          },
-        }}
-      />
       <h1 className="text-3xl font-bold mb-4">{snippet.title}</h1>
       <p className="text-gray-500 mb-2">Created at: {formattedDate}</p>
       <p className="text-gray-500 mb-4">Tags: {snippet.tags?.join(', ')}</p>
@@ -62,6 +48,7 @@ const Snippet = async ({ params }: Params) => {
         <span className="text-white">
           {languages.find((lang) => lang.ext === snippet.language)?.name}
         </span>
+        <CopyButton sourceCode={snippet.sourceCode} />
       </div>
       <pre className="bg-black rounded-b-md p-4 max-w-full overflow-x-auto">
         <code
