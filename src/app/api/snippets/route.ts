@@ -36,7 +36,7 @@ export const GET = async (req: NextRequest) => {
   try {
     const page: number = Number(req.nextUrl.searchParams.get('page')) || 1;
     const limit: number = Number(req.nextUrl.searchParams.get('limit')) || 10;
-
+    console.log(page, limit);
     const snippets = await Snippet.find()
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)

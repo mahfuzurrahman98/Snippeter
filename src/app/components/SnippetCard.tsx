@@ -1,16 +1,11 @@
-type SnippetType = {
-  uuid: string;
-  title: string;
-  language: string;
-  sourceCode: string;
-  owner: string;
-  tags: string[];
-};
+import { SnippetType } from '@utils/types';
 
 const SnippetCard = ({ snippet }: SnippetType) => {
   return (
     <div className="border border-gray-300 p-4 rounded-md mb-4">
-      <h2 className="text-xl font-bold">{snippet.title}</h2>
+      <a href={'/snippet/' + snippet.uuid} className="text-xl font-bold">
+        {snippet.title}
+      </a>
       <p className="text-gray-500">Language: {snippet.language}</p>
       <div className="flex mt-2">
         {snippet.tags.map((tag: string) => (
