@@ -13,15 +13,17 @@ interface FormData {
   tags: string[];
 }
 
+const initialFormData: FormData = {
+  title: '',
+  language: '',
+  sourceCode: '',
+  owner: '',
+  _tags: '',
+  tags: [],
+};
+
 const CreateSnippet = () => {
-  const [formData, setFormData] = useState<FormData>({
-    title: '',
-    language: '',
-    sourceCode: '',
-    owner: '',
-    _tags: '',
-    tags: [],
-  });
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
 
   const handleChange = (
@@ -51,6 +53,8 @@ const CreateSnippet = () => {
       const response = await axios.post('/api/snippets', formData);
       console.log(response.data.message);
       toast.success(response.data.message);
+      const snippet = response.data.snippet;
+      // navigate to the snippet page
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong!');

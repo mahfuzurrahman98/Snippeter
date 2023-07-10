@@ -17,6 +17,7 @@ export const POST = async (req: NextRequest) => {
       {
         message: 'Snippet created successfully',
         success: true,
+        data: { snippet },
       },
       { status: 201 }
     );
