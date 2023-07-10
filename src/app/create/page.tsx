@@ -88,13 +88,15 @@ const CreateSnippet = () => {
 
   return (
     <div className="mx-auto py-7 px-5 max-w-3xl">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold mb-6">Create a Snippet</h1>
+      <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6">
+          Create a Snippet
+        </h1>
         <Link
           className="px-3 py-1 text-white rounded bg-black hover:bg-gray-600"
           href="/"
         >
-          {'Back'}
+          Back
         </Link>
       </div>
       <Toaster
