@@ -1,6 +1,8 @@
 'use client';
 import languages from '@lib/data/languages';
 import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -25,6 +27,7 @@ const initialFormData: FormData = {
 const CreateSnippet = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleChange = (
     event: ChangeEvent<
@@ -41,6 +44,27 @@ const CreateSnippet = () => {
     event.preventDefault();
     setButtonDisabled(true);
 
+    if (formData.title === '') {
+      toast.error('Please enter a title!');
+      setButtonDisabled(false);
+      return;
+    }
+    if (formData.language === '') {
+      toast.error('Please select a language!');
+      setButtonDisabled(false);
+      return;
+    }
+    if (formData.sourceCode === '') {
+      toast.error('Please enter source code!');
+      setButtonDisabled(false);
+      return;
+    }
+    if (formData.owner === '') {
+      toast.error('Please enter your name!');
+      setButtonDisabled(false);
+      return;
+    }
+
     let tagsArray = formData._tags.split(',').map((tag) => tag.trim());
     tagsArray = tagsArray.filter((tag) => tag !== '');
 
@@ -51,12 +75,11 @@ const CreateSnippet = () => {
 
     try {
       const response = await axios.post('/api/snippets', formData);
-      console.log(response.data.message);
       toast.success(response.data.message);
-      const snippet = response.data.snippet;
-      // navigate to the snippet page
+      const snippet = response.data.data.snippet;
+
+      router.push(`/${snippet.uuid}`);
     } catch (error) {
-      console.log(error);
       toast.error('Something went wrong!');
     } finally {
       setButtonDisabled(false);
@@ -65,7 +88,15 @@ const CreateSnippet = () => {
 
   return (
     <div className="mx-auto py-7 px-5 max-w-3xl">
-      <h1 className="text-3xl font-bold mb-6">Create a Snippet</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold mb-6">Create a Snippet</h1>
+        <Link
+          className="px-3 py-1 text-white rounded bg-black hover:bg-gray-600"
+          href="/"
+        >
+          {'Back'}
+        </Link>
+      </div>
       <Toaster
         position="bottom-right"
         toastOptions={{
@@ -94,7 +125,6 @@ const CreateSnippet = () => {
             value={formData.title}
             onChange={handleChange}
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
-            required
           />
         </div>
         <div className="mb-6">
@@ -106,8 +136,7 @@ const CreateSnippet = () => {
             id="language"
             value={formData.language}
             onChange={handleChange}
-            className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
-            required
+            className="w-full px-3 py-[10px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
           >
             <option value="" selected>
               Select a language
@@ -132,7 +161,6 @@ const CreateSnippet = () => {
             value={formData.owner}
             onChange={handleChange}
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
-            required
           />
         </div>
         <div className="mb-6">
@@ -147,11 +175,10 @@ const CreateSnippet = () => {
             onChange={handleChange}
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
             rows={8}
-            required
           ></textarea>
         </div>
         <div className="mb-6">
-          <label htmlFor="tags" className="block mb-1 font-semibold">
+          <label htmlFor="_tags" className="block mb-1 font-semibold">
             Tags (comma-separated)
             <span className="ml-1 font-normal text-gray-500">optional</span>
           </label>
