@@ -1,4 +1,4 @@
-import { getAllSnippets } from '@/lib/data';
+import { getAllSnippets } from '@/lib/data/snippets';
 import { SnippetType, searchParamsType } from '@utils/types';
 import SnippetCard from './components/SnippetCard';
 

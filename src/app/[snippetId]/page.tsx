@@ -1,6 +1,6 @@
 import CopyButton from '@app/components/CopyButton';
-import languages from '@configs/languages';
-import { getSnippet } from '@lib/data';
+import languages from '@lib/data/languages';
+import { getSnippet } from '@lib/data/snippets';
 import { SnippetType } from '@utils/types';
 
 type Params = {

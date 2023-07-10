@@ -1,4 +1,4 @@
-import Database from '@configs/db';
+import Database from '@configs/Database';
 
 const db = Database.getInstance();
 

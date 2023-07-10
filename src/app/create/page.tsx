@@ -1,5 +1,5 @@
 'use client';
-import languages from '@configs/languages';
+import languages from '@lib/data/languages';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
