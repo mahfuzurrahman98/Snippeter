@@ -13,7 +13,7 @@ const SnippetCard = ({ snippet }: { snippet: SnippetType }) => {
           snippet.tags.map((tag: string) => (
             <span
               key={tag}
-              className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-sm mr-2"
+              className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded-md text-sm mr-2"
             >
               {tag}
             </span>

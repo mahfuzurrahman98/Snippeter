@@ -38,7 +38,6 @@ const CreateSnippet = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setButtonDisabled(true);
-    return;
 
     let tagsArray = formData._tags.split(',').map((tag) => tag.trim());
     tagsArray = tagsArray.filter((tag) => tag !== '');
