@@ -40,9 +40,9 @@ const Snippet = async ({ params }: Params) => {
   return (
     <div className="max-w-3xl mx-auto py-7 px-5">
       <h1 className="text-3xl font-bold mb-4">{snippet.title}</h1>
-      <p className="text-gray-500 mb-2">Created at: {formattedDate}</p>
-      <p className="text-gray-500 mb-4">Tags: {snippet.tags?.join(', ')}</p>
-      <p className="text-gray-500 mb-4">Owner: {snippet.owner}</p>
+      <p className="text-gray-700 mb-2">Created at: {formattedDate}</p>
+      <p className="text-gray-700 mb-4">Tags: {snippet.tags?.join(', ')}</p>
+      <p className="text-gray-700 mb-4">Owner: {snippet.owner}</p>
 
       <div className="flex justify-between items-center bg-gray-700 py-1 px-3 rounded-t-md">
         <span className="text-white">

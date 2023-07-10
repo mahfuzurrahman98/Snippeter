@@ -21,13 +21,18 @@ const CopyButton = ({ sourceCode }: { sourceCode: string }) => {
       />
 
       <button
-        className="font-semibold rounded-md p-1 bg-white flex gap-x-1 items-center"
+        className="font-semibold rounded-md px-2 py-1 bg-white flex gap-x-1 items-center"
         onClick={() => {
           navigator.clipboard.writeText(sourceCode);
           toast.success('Copied to clipboard!');
         }}
       >
-        <img src="/copy.svg" alt="copy" width={12} className="text-white" />
+        <img
+          src="/clipboard.svg"
+          alt="copy"
+          width={12}
+          className="text-white"
+        />
         <span className="text-black text-xs">Copy</span>
       </button>
     </>

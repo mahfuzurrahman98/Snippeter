@@ -4,7 +4,7 @@ import Link from 'next/link';
 const SnippetCard = ({ snippet }: { snippet: SnippetType }) => {
   return (
     <div className="border border-gray-300 p-4 rounded-md mb-4">
-      <Link href={'/snippets/' + snippet.uuid} className="text-xl font-bold">
+      <Link href={'/' + snippet.uuid} className="text-xl font-bold">
         {snippet.title}
       </Link>
       <p className="text-gray-500">Language: {snippet.language}</p>
