@@ -3,6 +3,7 @@ type Langauge = { ext: string; name: string };
 const languages: Langauge[] = [
   { ext: 'angular', name: 'Angular' },
   { ext: 'bat', name: 'Batch' },
+  { ext: 'c', name: 'C' },
   { ext: 'cobol', name: 'COBOL' },
   { ext: 'coffee', name: 'CoffeeScript' },
   { ext: 'cpp', name: 'C++' },
