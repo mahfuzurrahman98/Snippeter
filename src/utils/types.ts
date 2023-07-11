@@ -10,7 +10,7 @@ export type SnippetType = {
 
 export type searchParamsType = {
   q?: string;
-  language?: string;
+  lang?: string;
   page?: number;
   limit?: number;
 };

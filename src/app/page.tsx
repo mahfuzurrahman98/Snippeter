@@ -9,9 +9,9 @@ const Snippets = async ({
 }: {
   searchParams?: searchParamsType;
 }) => {
-  const { q = '', language = '', page = 1, limit = 10 } = searchParams || {};
+  const { q = '', lang = '', page = 1, limit = 10 } = searchParams || {};
 
-  const response = await getAllSnippets(q, language, page, limit);
+  const response = await getAllSnippets(q, lang, page, limit);
 
   if (!response.success) {
     console.log(response.message);
