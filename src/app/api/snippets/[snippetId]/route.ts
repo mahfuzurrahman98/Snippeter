@@ -3,10 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest, context: { params: any }) => {
   const uuid = context.params.snippetId;
-  console.log(uuid);
   try {
     const snippet = await Snippet.findOne({ uuid });
-    console.log(snippet);
+
     if (snippet) {
       return NextResponse.json(
         {

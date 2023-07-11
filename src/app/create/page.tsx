@@ -73,8 +73,6 @@ const CreateSnippet = () => {
       tags: [...tagsArray],
     }));
 
-    console.log(formData);
-    // return;
     try {
       const response = await axios.post('/api/snippets', formData);
       toast.success(response.data.message);

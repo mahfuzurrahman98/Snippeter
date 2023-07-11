@@ -14,7 +14,6 @@ const Snippets = async ({
   const response = await getAllSnippets(q, lang, page, limit);
 
   if (!response.success) {
-    console.log(response.message);
     return null;
   }
 

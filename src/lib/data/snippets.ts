@@ -35,10 +35,8 @@ export const getAllSnippets = async (
 };
 
 export const getSnippet = async (uuid: string) => {
-  console.log(uuid);
   try {
     const snippet = await Snippet.findOne({ uuid });
-    console.log(snippet);
     if (snippet) {
       return {
         message: 'Snippet fetched successfully',

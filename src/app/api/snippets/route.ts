@@ -7,8 +7,7 @@ export const POST = async (req: NextRequest) => {
     const reqBody = await req.json();
 
     delete reqBody._tags;
-    console.log(reqBody);
-    // return;
+
     reqBody.uuid = v4();
     const snippet = new Snippet(reqBody);
     await snippet.save();
