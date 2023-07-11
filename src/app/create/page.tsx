@@ -3,7 +3,7 @@ import languages from '@lib/data/languages';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface FormData {
@@ -40,6 +40,16 @@ const CreateSnippet = () => {
     }));
   };
 
+  useEffect(() => {
+    let tagsArray = formData._tags.split(',').map((tag) => tag.trim());
+    tagsArray = tagsArray.filter((tag) => tag !== '');
+
+    setFormData((prevData) => ({
+      ...prevData,
+      tags: [...tagsArray],
+    }));
+  }, [formData._tags]);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setButtonDisabled(true);
@@ -65,13 +75,8 @@ const CreateSnippet = () => {
       return;
     }
 
-    let tagsArray = formData._tags.split(',').map((tag) => tag.trim());
-    tagsArray = tagsArray.filter((tag) => tag !== '');
-
-    setFormData((prevData) => ({
-      ...prevData,
-      tags: [...tagsArray],
-    }));
+    console.log(formData);
+    // return;
 
     try {
       const response = await axios.post('/api/snippets', formData);
@@ -89,7 +94,7 @@ const CreateSnippet = () => {
   return (
     <div className="mx-auto py-7 px-5 max-w-3xl">
       <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold mb-4">
           Create a Snippet
         </h1>
         <Link
@@ -115,7 +120,7 @@ const CreateSnippet = () => {
       />
 
       <form onSubmit={handleSubmit}>
-        <div className="mb-6">
+        <div className="mb-4">
           <label htmlFor="title" className="block mb-1 font-semibold">
             Title
           </label>
@@ -129,7 +134,7 @@ const CreateSnippet = () => {
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-4">
           <label htmlFor="language" className="block mb-1 font-semibold">
             Language
           </label>
@@ -151,7 +156,7 @@ const CreateSnippet = () => {
           </select>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-4">
           <label htmlFor="owner" className="block mb-1 font-semibold">
             Owner Name
           </label>
@@ -165,7 +170,7 @@ const CreateSnippet = () => {
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-4">
           <label htmlFor="sourceCode" className="block mb-1 font-semibold">
             Source Code
           </label>
@@ -179,7 +184,7 @@ const CreateSnippet = () => {
             rows={8}
           ></textarea>
         </div>
-        <div className="mb-6">
+        <div className="mb-4">
           <label htmlFor="_tags" className="block mb-1 font-semibold">
             Tags (comma-separated)
             <span className="ml-1 font-normal text-gray-500">optional</span>

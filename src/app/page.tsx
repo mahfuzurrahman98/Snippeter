@@ -33,9 +33,11 @@ const Snippets = async ({
 
       <Search />
 
-      {snippets.map((snippet: SnippetType) => (
-        <SnippetCard key={snippet.uuid} snippet={snippet} />
-      ))}
+      <div className="mt-5 grid grid-cols-1 md:grid-cols-3 md:gap-x-3">
+        {snippets.map((snippet: SnippetType) => (
+          <SnippetCard key={snippet.uuid} snippet={snippet} />
+        ))}
+      </div>
     </div>
   );
 };
