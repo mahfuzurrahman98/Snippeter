@@ -1,3 +1,4 @@
+import languages from '@lib/data/languages';
 import { SnippetType } from '@utils/types';
 import Link from 'next/link';
 
@@ -7,7 +8,10 @@ const SnippetCard = ({ snippet }: { snippet: SnippetType }) => {
       <Link href={'/' + snippet.uuid} className="text-xl font-bold">
         {snippet.title}
       </Link>
-      <p className="text-gray-500">Language: {snippet.language}</p>
+      <p className="text-gray-500">
+        Language:{' '}
+        {languages.find((lang) => lang.ext === snippet.language)?.name}
+      </p>
       <div className="flex mt-2">
         {snippet.tags &&
           snippet.tags.map((tag: string) => (
