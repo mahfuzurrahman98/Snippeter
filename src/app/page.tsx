@@ -1,6 +1,7 @@
 import { getAllSnippets } from '@/lib/data/snippets';
 import { SnippetType, searchParamsType } from '@utils/types';
 import Link from 'next/link';
+import Pagination from './components/Pagination';
 import Search from './components/Search';
 import SnippetCard from './components/SnippetCard';
 
@@ -20,7 +21,7 @@ const Snippets = async ({
   const snippets = response.data?.snippets || [];
 
   return (
-    <div className="p-5 max-w-screen-xl mx-auto">
+    <div className="flex flex-col mx-auto min-h-screen max-w-screen-xl p-5">
       <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
         <h1 className="text-2xl md:text-3xl font-bold mb-6">Snippets</h1>
         <Link
@@ -37,6 +38,10 @@ const Snippets = async ({
         {snippets.map((snippet: SnippetType) => (
           <SnippetCard key={snippet.uuid} snippet={snippet} />
         ))}
+      </div>
+
+      <div className="mt-auto">
+        <Pagination />
       </div>
     </div>
   );
