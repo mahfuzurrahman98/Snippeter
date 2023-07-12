@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Snippets',
+  title: 'Snippeter',
   description: 'view all snippets',
 };
 
