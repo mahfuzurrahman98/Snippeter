@@ -3,6 +3,7 @@ import ShareButton from '@app/components/ShareButton';
 import languages from '@lib/data/languages';
 import { getSnippet } from '@lib/data/snippets';
 import { SnippetType } from '@utils/types';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 type Params = {
@@ -16,6 +17,15 @@ type Response = {
   message: string;
   data?: { snippet: SnippetType } | undefined;
 };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const response: Response = await getSnippet(params.snippetId);
+  const snippet = response.data?.snippet;
+
+  return {
+    title: snippet ? `${snippet.title} | Snippeter` : 'Snippet',
+  };
+}
 
 const Snippet = async ({ params }: Params) => {
   const response: Response = await getSnippet(params.snippetId);
