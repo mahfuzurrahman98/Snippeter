@@ -1,4 +1,5 @@
 import CopyButton from '@app/components/CopyButton';
+import ShareButton from '@app/components/ShareButton';
 import languages from '@lib/data/languages';
 import { getSnippet } from '@lib/data/snippets';
 import { SnippetType } from '@utils/types';
@@ -42,9 +43,23 @@ const Snippet = async ({ params }: Params) => {
     <div className="max-w-3xl mx-auto py-7 px-5">
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold mb-4">{snippet.title}</h1>
+          <div className="flex items-center gap-x-2 mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold">{snippet.title}</h1>
+            <ShareButton shareLink={snippet.uuid} />
+          </div>
           <p className="text-gray-700 mb-2">Created at: {formattedDate}</p>
-          <p className="text-gray-700 mb-4">Tags: {snippet.tags?.join(', ')}</p>
+          <p className="text-gray-700 mb-4">
+            Tags:
+            {snippet.tags &&
+              snippet.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md ml-2"
+                >
+                  {tag}
+                </span>
+              ))}
+          </p>
           <p className="text-gray-700 mb-4">Owner: {snippet.owner}</p>
         </div>
         <Link

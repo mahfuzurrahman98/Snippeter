@@ -20,7 +20,6 @@ const Search = () => {
   const [searchData, setSearchData] =
     useState<SearchDataProps>(initialSearchData);
   const router = useRouter();
-  console.log(router.prefetch);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -32,21 +31,25 @@ const Search = () => {
   };
 
   useEffect(() => {
-    let encoded = '';
+    const params = new URLSearchParams(location.search);
     if (searchData.q?.trim() !== '') {
-      encoded += `q=${encodeURIComponent(searchData.q.trim())}`;
+      params.set('q', searchData.q.trim());
+    } else {
+      params.delete('q');
     }
     if (searchData.lang?.trim() !== '') {
-      searchData.q.trim() !== '' ? (encoded += '&') : '';
-      encoded += `lang=${encodeURIComponent(searchData.lang.trim())}`;
+      params.set('lang', searchData.lang.trim());
+    } else {
+      params.delete('lang');
     }
-    router.push(`/?${encoded}`);
+
+    router.push(`?${params.toString()}`);
   }, [searchData]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-2">
       <div className="md:col-span-2">
-        <label htmlFor="q" className="block mb-1 font-semibold">
+        <label htmlFor="q" className="block mb-1 font-medium">
           Title or tags
         </label>
         <input
@@ -61,7 +64,7 @@ const Search = () => {
       </div>
 
       <div>
-        <label htmlFor="lang" className="block mb-1 font-semibold">
+        <label htmlFor="lang" className="block mb-1 font-medium">
           Language
         </label>
         <select
