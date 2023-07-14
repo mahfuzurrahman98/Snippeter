@@ -1,94 +1,64 @@
 'use client';
+
+import { addSnippetAction } from '@app/_actions';
+import SubmitButton from '@app/components/SubmitButton';
 import languages from '@lib/data/languages';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-
-interface FormData {
-  title: string;
-  language: string;
-  sourceCode: string;
-  owner: string;
-  _tags: string;
-  tags: string[];
-}
-
-const initialFormData: FormData = {
-  title: '',
-  language: '',
-  sourceCode: '',
-  owner: '',
-  _tags: '',
-  tags: [],
-};
+import { useRef } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
+import { v4 } from 'uuid';
 
 const CreateSnippet = () => {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const handleChange = (
-    event: ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [event.target.name]: event.target.value,
-    }));
-  };
-
-  useEffect(() => {
-    let tagsArray = formData._tags.split(',').map((tag) => tag.trim());
-    tagsArray = tagsArray.filter((tag) => tag !== '');
-
-    setFormData((prevData) => ({
-      ...prevData,
-      tags: [...tagsArray],
-    }));
-  }, [formData._tags]);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setButtonDisabled(true);
-
-    if (formData.title === '') {
-      toast.error('Please enter a title!');
-      setButtonDisabled(false);
+  const action = async (formData: FormData) => {
+    if (!formData.get('title')) {
+      toast.error('Title is required!');
       return;
     }
-    if (formData.language === '') {
-      toast.error('Please select a language!');
-      setButtonDisabled(false);
+    if (!formData.get('language')) {
+      toast.error('Language is required!');
       return;
     }
-    if (formData.sourceCode === '') {
-      toast.error('Please enter source code!');
-      setButtonDisabled(false);
+    if (!formData.get('owner')) {
+      toast.error('Owner name is required!');
       return;
     }
-    if (formData.owner === '') {
-      toast.error('Please enter your name!');
-      setButtonDisabled(false);
+    if (!formData.get('sourceCode')) {
+      toast.error('Source code is required!');
       return;
     }
 
-    console.log(formData);
-    // return;
+    const snippetData = {
+      uuid: v4() as string,
+      title: formData.get('title') as string,
+      language: formData.get('language') as string,
+      sourceCode: formData.get('sourceCode') as string,
+      owner: formData.get('owner') as string,
+      tags: [] as string[],
+    };
 
-    try {
-      const response = await axios.post('/api/snippets', formData);
-      toast.success(response.data.message);
-      const snippet = response.data.data.snippet;
+    const _tags = formData.get('_tags') as string;
+    let tagsArray = _tags.split(',').map((tag: string) => tag.trim());
+    tagsArray = tagsArray.filter((tag: string) => tag !== '');
+    snippetData.tags = tagsArray;
 
-      router.push(`/${snippet.uuid}`);
-    } catch (error) {
-      toast.error('Something went wrong!');
-    } finally {
-      setButtonDisabled(false);
+    const response = await addSnippetAction(snippetData);
+
+    if (!response.success) {
+      toast.error(response.message);
+      return;
     }
+
+    const snippet = response.data?.snippet;
+
+    toast.success('Snippet created successfully!');
+    formRef.current?.reset();
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    router.push(`/${snippet?.uuid}`);
   };
 
   return (
@@ -119,7 +89,7 @@ const CreateSnippet = () => {
         }}
       />
 
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} action={action}>
         <div className="mb-4">
           <label htmlFor="title" className="block mb-1 font-semibold">
             Title
@@ -127,10 +97,7 @@ const CreateSnippet = () => {
           <input
             type="text"
             name="title"
-            id="title"
             placeholder="Enter title"
-            value={formData.title}
-            onChange={handleChange}
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
           />
         </div>
@@ -140,14 +107,10 @@ const CreateSnippet = () => {
           </label>
           <select
             name="language"
-            id="language"
-            value={formData.language}
-            onChange={handleChange}
             className="w-full px-3 py-[10px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
+            defaultValue={''}
           >
-            <option value="" selected>
-              Select a language
-            </option>
+            <option value="">Select a language</option>
             {languages.map((lang, index) => (
               <option key={index} value={lang.ext}>
                 {lang.name}
@@ -163,10 +126,7 @@ const CreateSnippet = () => {
           <input
             type="text"
             name="owner"
-            id="owner"
             placeholder="Enter your name"
-            value={formData.owner}
-            onChange={handleChange}
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
           />
         </div>
@@ -176,10 +136,7 @@ const CreateSnippet = () => {
           </label>
           <textarea
             name="sourceCode"
-            id="sourceCode"
             placeholder="Enter source code"
-            value={formData.sourceCode}
-            onChange={handleChange}
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
             rows={8}
           ></textarea>
@@ -192,29 +149,12 @@ const CreateSnippet = () => {
           <input
             type="text"
             name="_tags"
-            id="_tags"
             placeholder="ex: javascript, react, nodejs"
-            value={formData._tags}
-            onChange={handleChange}
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
           />
         </div>
-        <button
-          type="submit"
-          className={`px-4 py-2 text-white rounded hover:bg-gray-600 ${
-            buttonDisabled ? 'bg-gray-700' : 'bg-black '
-          }`}
-          disabled={buttonDisabled}
-        >
-          {buttonDisabled ? (
-            <div className="flex items-center">
-              <img src="/loading.gif" alt="Loading" className="w-5 h-5 mr-2" />
-              Creating...
-            </div>
-          ) : (
-            'Create'
-          )}
-        </button>
+
+        <SubmitButton />
       </form>
     </div>
   );
