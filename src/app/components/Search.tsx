@@ -9,14 +9,14 @@ type SearchDataProps = {
   lang: string;
 };
 
-const params = new URLSearchParams(location.search);
+// const params = new URLSearchParams(location.search);
 
-const initialSearchData: SearchDataProps = {
-  q: params.get('q') || '',
-  lang: params.get('lang') || '',
-};
+const Search = ({ q, lang }: { q: string; lang: string }) => {
+  const initialSearchData: SearchDataProps = {
+    q: q || '',
+    lang: lang || '',
+  };
 
-const Search = () => {
   const [searchData, setSearchData] =
     useState<SearchDataProps>(initialSearchData);
   const router = useRouter();

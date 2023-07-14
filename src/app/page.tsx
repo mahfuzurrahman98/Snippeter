@@ -3,13 +3,9 @@ import { SnippetType, searchParamsType } from '@utils/types';
 import Link from 'next/link';
 import Pagination from './components/Pagination';
 import Search from './components/Search';
-import SnippetCard from './components/SnippetCard';
+import Snippets from './components/Snippets';
 
-const Snippets = async ({
-  searchParams,
-}: {
-  searchParams?: searchParamsType;
-}) => {
+const Home = async ({ searchParams }: { searchParams?: searchParamsType }) => {
   const { q = '', lang = '', page = 1, limit = 10 } = searchParams || {};
 
   const response = await getAllSnippets(q, lang, page, limit);
@@ -18,7 +14,7 @@ const Snippets = async ({
     return null;
   }
 
-  const snippets = response.data?.snippets || [];
+  const snippets: SnippetType[] = response.data?.snippets || [];
 
   return (
     <div className="flex flex-col mx-auto min-h-screen max-w-screen-xl p-5">
@@ -32,19 +28,15 @@ const Snippets = async ({
         </Link>
       </div>
 
-      <Search />
+      <Search q={q} lang={lang} />
 
-      <div className="mt-5 grid grid-cols-1 md:grid-cols-3 md:gap-x-3">
-        {snippets.map((snippet: SnippetType) => (
-          <SnippetCard key={snippet.uuid} snippet={snippet} />
-        ))}
-      </div>
+      <Snippets snippets={snippets} />
 
       <div className="mt-auto">
-        <Pagination />
+        <Pagination page={page} limit={limit} />
       </div>
     </div>
   );
 };
 
-export default Snippets;
+export default Home;

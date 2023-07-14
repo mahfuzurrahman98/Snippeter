@@ -9,14 +9,12 @@ type SearchDataProps = {
   limit: number;
 };
 
-const params = new URLSearchParams(location.search);
+const Pagination = ({ page, limit }: { page: number; limit: number }) => {
+  const initialSearchData: SearchDataProps = {
+    page: page || 1,
+    limit: limit || 10,
+  };
 
-const initialSearchData: SearchDataProps = {
-  page: parseInt(params.get('page') || '1', 10),
-  limit: parseInt(params.get('limit') || '10', 10),
-};
-
-const Pagination = () => {
   const [searchData, setSearchData] =
     useState<SearchDataProps>(initialSearchData);
   const [totalSnippets, setTotalSnippets] = useState<number>(0);
