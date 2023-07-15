@@ -5,11 +5,17 @@ export const metadata = {
   description: 'view all snippets',
   openGraph: {
     type: 'website',
-    locale: 'en_IE',
+    locale: 'en_US',
     url: 'https://snippeter.vercel.app/',
     title: 'Snippeter',
     description: 'view snippets',
-    image: '/og.png',
+    images: [
+      {
+        url: '/og.png',
+        width: 200,
+        height: 200,
+      },
+    ],
   },
 };
 
