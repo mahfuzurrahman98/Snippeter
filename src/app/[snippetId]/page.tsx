@@ -55,7 +55,7 @@ const Snippet = async ({ params }: Params) => {
     : 'Unknown Date';
 
   return (
-    <div className="max-w-3xl mx-auto py-7 px-5">
+    <div className="max-w-4xl mx-auto py-7 px-5">
       <div className="flex justify-between items-start">
         <div>
           <div className="flex items-center gap-x-2 mb-4">

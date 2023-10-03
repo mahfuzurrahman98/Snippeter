@@ -19,7 +19,7 @@ const Home = async ({ searchParams }: { searchParams?: searchParamsType }) => {
   return (
     <div className="flex flex-col mx-auto min-h-screen max-w-screen-xl p-5">
       <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6">Snippets</h1>
+        <h1 className="text-2xl md:text-4xl font-bold mb-6">Snippets</h1>
         <Link
           className="px-3 py-1 text-white rounded bg-black hover:bg-gray-600"
           href="/create"
