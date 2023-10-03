@@ -2,7 +2,7 @@ export type SnippetType = {
   uuid: string;
   title: string;
   language: string;
-  mode: string | undefined;
+  mode: string;
   sourceCode: string;
   owner: string;
   tags?: string[];
