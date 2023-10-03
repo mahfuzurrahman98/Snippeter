@@ -138,7 +138,7 @@ const CreateSnippet = () => {
             name="sourceCode"
             placeholder="Enter source code"
             className="w-full px-3 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
-            rows={8}
+            rows={12}
           ></textarea>
         </div>
         <div className="mb-4">
