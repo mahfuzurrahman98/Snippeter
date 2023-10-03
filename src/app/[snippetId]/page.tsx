@@ -6,6 +6,8 @@ import { SnippetType } from '@utils/types';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
+import AceComponent from '../components/AceEditor';
+
 type Params = {
   params: {
     snippetId: string;
@@ -38,6 +40,9 @@ const Snippet = async ({ params }: Params) => {
       </div>
     );
   }
+
+  // set snippet mode
+  snippet.mode = languages.find((lang) => lang.ext === snippet.language)?.mode as string;
 
   const formattedDate = snippet.createdAt
     ? new Date(snippet.createdAt).toLocaleString('en-US', {
@@ -86,12 +91,12 @@ const Snippet = async ({ params }: Params) => {
         </span>
         <CopyButton sourceCode={snippet.sourceCode} />
       </div>
-      <pre className="bg-black rounded-b-md p-4 max-w-full overflow-x-auto">
-        <code
-          className="text-sm font-fira-code text-white"
-          dangerouslySetInnerHTML={{ __html: snippet.sourceCode }}
-        ></code>
-      </pre>
+      <AceComponent
+        sourceCode={snippet.sourceCode}
+        mode={snippet.mode}
+        theme={'github_dark'}
+        readOnly={true}
+      />
     </div>
   );
 };
